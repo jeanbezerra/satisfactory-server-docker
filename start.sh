@@ -15,13 +15,13 @@ echo "=============="
 echo "=============="
 echo "Gravando novas permissões..."
 chmod -R 777 /steamcmd
-chown -R steam:steam /steamcmd
-chmod -R 777 satisfactory-server/FactoryServer.sh
-chown -R steam:steam satisfactory-server
+chmod -R 777 /satisfactory-server
+chmod -R 777 /satisfactory-config
 chmod -R 777 /satisfactory-savegame
+chown -R steam:steam /steamcmd
+chown -R steam:steam /satisfactory-server
+chown -R steam:steam /satisfactory-config
 chown -R steam:steam /satisfactory-savegame
-chmod -R 777 /home/steam/start.sh
-chown -R steam:steam /home/steam/start.sh
 echo "Permissões atualizadas!"
 echo "=============="
 
@@ -29,9 +29,6 @@ echo "=============="
 echo "Validação da data e hora do servidor"
 echo date
 echo "=============="
-
-
-MaxPlayers=8
 
 # Inicia o servidor do jogo
 cd "$GAME_DIR"

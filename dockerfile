@@ -7,8 +7,8 @@ RUN apt update && \
     apt clean
 
 # Instale dependências e configure o timezone para GMT-3 (São Paulo)
-RUN apt-get update && \
-    apt-get install -y tzdata && \
+RUN apt update && \
+    apt install -y tzdata && \
     ln -fs /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime && \
     echo "America/Sao_Paulo" > /etc/timezone && \
     dpkg-reconfigure -f noninteractive tzdata
@@ -38,6 +38,7 @@ RUN chown -R steam:steam /steamcmd
 
 # Copie o script de inicialização
 COPY start.sh /home/steam/start.sh
+RUN ls -lah /home/steam/ && cat /home/steam/start.sh
 RUN chmod -R 777 /home/steam/start.sh
 RUN chown -R steam:steam /home/steam/start.sh
 
@@ -61,4 +62,5 @@ EXPOSE 15777/tcp
 USER steam
 
 # Inicialização do servidor
-CMD ["bash", "/home/steam/start.sh"]
+#CMD ["bash", "/home/steam/start.sh"]
+CMD ["bash", "-c", "exec /home/steam/start.sh || exec bash"]
