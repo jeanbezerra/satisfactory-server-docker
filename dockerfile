@@ -19,15 +19,17 @@ RUN useradd -m -s /usr/sbin/nologin steam
 # Criar diretórios
 RUN mkdir -p /steamcmd
 RUN mkdir -p /satisfactory-server
+RUN mkdir -p /satisfactory-config
 RUN mkdir -p /satisfactory-savegame
 
 # Alterar permissões
 RUN chown -R steam:steam /steamcmd
 RUN chown -R steam:steam /satisfactory-server
+RUN chown -R steam:steam /satisfactory-config
 RUN chown -R steam:steam /satisfactory-savegame
 
 # Definir o diretório de trabalho
-WORKDIR /satisfactory
+WORKDIR /satisfactory-server
 
 # Baixar e instalar o SteamCMD para baixar o servidor
 RUN cd /steamcmd && wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz && tar -xvzf steamcmd_linux.tar.gz && rm steamcmd_linux.tar.gz
@@ -43,6 +45,7 @@ RUN chown -R steam:steam /home/steam/start.sh
 VOLUME ["/steamcmd"]
 VOLUME ["/home"]
 VOLUME ["/satisfactory-server"]
+VOLUME ["/satisfactory-config"]
 VOLUME ["/satisfactory-savegame"]
 
 
