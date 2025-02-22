@@ -86,5 +86,5 @@ docker build --file dockerfile -t satisfactory-server-image:1.0.0 --no-cache=tru
 ```
 
 ```sh
-docker run -d -p 7777:7777/udp -p 7777:7777/tcp -p 15000:15000/udp -p 15000:15000/tcp -p 15777:15777/udp -p 15777:15777/tcp -v E:\SATISFACTORY_SERVER_CONTAINER\home:/home/steam -v E:\SATISFACTORY_SERVER_CONTAINER\steamcmd:/steamcmd -v E:\SATISFACTORY_SERVER_CONTAINER\satisfactory-server:/satisfactory -v E:\SATISFACTORY_SERVER_CONTAINER\satisfactory-config:/satisfactory/FactoryGame/Saved/Config/LinuxServer -v E:\SATISFACTORY_SERVER_CONTAINER\satisfactory-savegame:/home/steam/.config/Epic/FactoryGame/Saved --name satisfactory-server-1.0.0 satisfactory-server-image:1.0.0
+docker run -d -p 7777:7777/udp -p 7777:7777/tcp -p 15000:15000/udp -p 15000:15000/tcp -p 15777:15777/udp -p 15777:15777/tcp -v E:\SATISFACTORY_SERVER_CONTAINER\home:/home -v E:\SATISFACTORY_SERVER_CONTAINER\steamcmd:/steamcmd -v E:\SATISFACTORY_SERVER_CONTAINER\satisfactory-server:/satisfactory-server -v E:\SATISFACTORY_SERVER_CONTAINER\satisfactory-config:/satisfactory-server/FactoryGame/Saved/Config/LinuxServer -v E:\SATISFACTORY_SERVER_CONTAINER\satisfactory-savegame:/home/steam/.config/Epic/FactoryGame/Saved --name satisfactory-server-1.0.0 satisfactory-server-image:1.0.0
 ```
