@@ -6,6 +6,7 @@ FROM ubuntu:24.04
 # Atualizar pacotes e instalar dependências necessárias
 RUN apt update && apt install -y \
     wget curl lib32gcc-s1 bzip2 unzip tzdata \
+    && apt install libsdl2-2.0-0:i386 \
     && ln -fs /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime \
     && echo "America/Sao_Paulo" > /etc/timezone \
     && dpkg-reconfigure -f noninteractive tzdata \
@@ -17,18 +18,17 @@ RUN useradd -m -s /usr/sbin/nologin steam
 # Criar diretórios necessários e definir permissões
 RUN mkdir -p /steamcmd 
 RUN mkdir -p /satisfactory-server
-RUN mkdir -p /satisfactory-config
-RUN mkdir -p /satisfactory-savegame
+RUN mkdir -p /satisfactory-scripts
+RUN mkdir -p /home/steam/.config/Epic/FactoryGame/Saved/SaveGames
 
 RUN chown -R steam:steam /steamcmd
 RUN chown -R steam:steam /satisfactory-server
-RUN chown -R steam:steam /satisfactory-config
-RUN chown -R steam:steam /satisfactory-savegame
+RUN chown -R steam:steam /satisfactory-scripts
+RUN chown -R steam:steam /home/steam/.config/Epic/FactoryGame/Saved/SaveGames
 
 # Definir os diretórios
 VOLUME /satisfactory-server
 VOLUME /satisfactory-scripts
-VOLUME /satisfactory-savegame
 
 # Baixar e instalar o SteamCMD
 RUN cd /steamcmd \
