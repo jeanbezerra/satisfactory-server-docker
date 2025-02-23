@@ -5,8 +5,7 @@ FROM ubuntu:24.04
 
 # Atualizar pacotes e instalar dependências necessárias
 RUN apt update && apt install -y \
-    wget curl lib32gcc-s1 bzip2 unzip tzdata \
-    && apt install libsdl2-2.0-0:i386 \
+    wget curl lib32gcc-s1 bzip2 unzip tzdata libsdl2-2.0-0 \
     && ln -fs /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime \
     && echo "America/Sao_Paulo" > /etc/timezone \
     && dpkg-reconfigure -f noninteractive tzdata \
