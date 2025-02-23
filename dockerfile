@@ -1,66 +1,55 @@
 # Usar a imagem base do Ubuntu 24.04 LTS
 FROM ubuntu:24.04
 
-# Atualizar pacotes e instalar dependências necessárias
-RUN apt update && \
-    apt install -y wget curl lib32gcc-s1 bzip2 unzip && \
-    apt clean
 
-# Instale dependências e configure o timezone para GMT-3 (São Paulo)
-RUN apt update && \
-    apt install -y tzdata && \
-    ln -fs /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime && \
-    echo "America/Sao_Paulo" > /etc/timezone && \
-    dpkg-reconfigure -f noninteractive tzdata
+
+# Atualizar pacotes e instalar dependências necessárias
+RUN apt update && apt install -y \
+    wget curl lib32gcc-s1 bzip2 unzip tzdata \
+    && ln -fs /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime \
+    && echo "America/Sao_Paulo" > /etc/timezone \
+    && dpkg-reconfigure -f noninteractive tzdata \
+    && apt clean
 
 # Criar usuário steam com home, mas sem login
 RUN useradd -m -s /usr/sbin/nologin steam
 
-# Criar diretórios
-RUN mkdir -p /steamcmd
+# Criar diretórios necessários e definir permissões
+RUN mkdir -p /steamcmd 
 RUN mkdir -p /satisfactory-server
 RUN mkdir -p /satisfactory-config
 RUN mkdir -p /satisfactory-savegame
 
-# Alterar permissões
 RUN chown -R steam:steam /steamcmd
 RUN chown -R steam:steam /satisfactory-server
 RUN chown -R steam:steam /satisfactory-config
 RUN chown -R steam:steam /satisfactory-savegame
 
-# Definir o diretório de trabalho
-WORKDIR /satisfactory-server
-
-# Baixar e instalar o SteamCMD para baixar o servidor
-RUN cd /steamcmd && wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz && tar -xvzf steamcmd_linux.tar.gz && rm steamcmd_linux.tar.gz
-RUN chmod -R 777 /steamcmd
-RUN chown -R steam:steam /steamcmd
-
-# Copie o script de inicialização
-COPY start.sh /home/steam/start.sh
-RUN ls -lah /home/steam/ && cat /home/steam/start.sh
-RUN chmod -R 777 /home/steam/start.sh
-RUN chown -R steam:steam /home/steam/start.sh
-
 # Definir os diretórios
-VOLUME ["/home"]
-VOLUME ["/steamcmd"]
-VOLUME ["/satisfactory-server"]
-VOLUME ["/satisfactory-config"]
-VOLUME ["/satisfactory-savegame"]
+VOLUME /satisfactory-server
+VOLUME /satisfactory-scripts
+VOLUME /satisfactory-savegame
 
+# Baixar e instalar o SteamCMD
+RUN cd /steamcmd \
+    && wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz \
+    && tar -xvzf steamcmd_linux.tar.gz \
+    && rm steamcmd_linux.tar.gz \
+    && chown -R steam:steam /steamcmd
 
-# Expor as portas necessárias para o servidor
-EXPOSE 7777/udp
-EXPOSE 7777/tcp
-EXPOSE 15000/udp
-EXPOSE 15000/tcp
-EXPOSE 15777/udp
-EXPOSE 15777/tcp
+# Copiar o script de inicialização e ajustar permissões
+COPY start.sh /satisfactory-scripts/start.sh
+RUN chmod 755 /satisfactory-scripts/start.sh 
+RUN chown steam:steam /satisfactory-scripts/start.sh
+
+# Expor as portas do servidor
+EXPOSE 7777/udp 15000/udp 15777/udp
 
 # Definir usuário padrão
 USER steam
 
-# Inicialização do servidor
-#CMD ["bash", "/home/steam/start.sh"]
-CMD ["bash", "-c", "exec /home/steam/start.sh || exec bash"]
+# Definir o diretório de trabalho
+WORKDIR /satisfactory-server
+
+# Comando para iniciar o servidor
+CMD ["/bin/bash", "/satisfactory-scripts/start.sh"]

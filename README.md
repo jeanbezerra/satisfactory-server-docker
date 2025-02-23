@@ -59,7 +59,6 @@ docker run -d `
 docker run -d -p 7777:7777/udp -p 7777:7777/tcp -p 15000:15000/udp -p 15000:15000/tcp -p 15777:15777/udp -p 15777:15777/tcp -v E:\SATISFACTORY_SERVER_DOCKER\server:/satisfactory/ -v E:\SATISFACTORY_SERVER_DOCKER\savegame:/satisfactory-savegame -v E:\SATISFACTORY_SERVER_DOCKER\home:/home/steam/.config/Epic --name satisfactory satisfactory-server-image
 ```
 
-
 ## Versão 3.0
 
 ### Linux
@@ -82,18 +81,31 @@ docker run -d \
 ### Windows
 
 ```sh
-docker build --file dockerfile -t satisfactory-server-image:1.0.0 --no-cache=true .
+docker build --file Dockerfile -t satisfactory-server-image .
 ```
 
 ```sh
-docker run -d --restart unless-stopped --name satisfactory-server-1.0.0 `
+docker build --file Dockerfile -t satisfactory-server-image --no-cache=true .
+```
+
+```sh
+docker build --file Dockerfile -t satisfactory-server-image:1.0.0 --no-cache=true .
+```
+
+```sh
+docker run -d --restart no --name satisfactory-server `
   -p 7777:7777/udp -p 7777:7777/tcp `
   -p 15000:15000/udp -p 15000:15000/tcp `
   -p 15777:15777/udp -p 15777:15777/tcp `
-  -v "E:\SATISFACTORY_SERVER_CONTAINER\home:/home" `
-  -v "E:\SATISFACTORY_SERVER_CONTAINER\steamcmd:/steamcmd" `
   -v "E:\SATISFACTORY_SERVER_CONTAINER\satisfactory-server:/satisfactory-server" `
-  -v "E:\SATISFACTORY_SERVER_CONTAINER\satisfactory-config:/satisfactory-server/FactoryGame/Saved/Config/LinuxServer" `
-  -v "E:\SATISFACTORY_SERVER_CONTAINER\satisfactory-savegame:/home/steam/.config/Epic/FactoryGame/Saved" `
-  satisfactory-server-image:1.0.0
+  -v "E:\SATISFACTORY_SERVER_CONTAINER\satisfactory-savegame:/satisfactory-savegame" `
+  satisfactory-server-image
+```
+
+```sh
+docker run -d --restart no --name satisfactory-server `
+  -p 7777:7777/udp -p 7777:7777/tcp `
+  -p 15000:15000/udp -p 15000:15000/tcp `
+  -p 15777:15777/udp -p 15777:15777/tcp `
+  satisfactory-server-image
 ```
