@@ -43,8 +43,8 @@ RUN chmod -R 777 /home/steam/start.sh
 RUN chown -R steam:steam /home/steam/start.sh
 
 # Definir os diretórios
-VOLUME ["/steamcmd"]
 VOLUME ["/home"]
+VOLUME ["/steamcmd"]
 VOLUME ["/satisfactory-server"]
 VOLUME ["/satisfactory-config"]
 VOLUME ["/satisfactory-savegame"]
